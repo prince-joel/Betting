@@ -1,18 +1,42 @@
-//SPDX-License-Identifier: Unlicense
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-contract Bet {
-    address public player;
-    bool public Win;
-    bool public Loose;
-    bool public Draw;
-    
+contract Betting{
+    event PlaceBet(address caller, uint choice);
+    event Deposit(address caller, uint amount);
 
-    receive() external payable{}
+    struct Users{
+        address owner;
+        uint accountBalance;
+        uint betAmount;
+        uint choice;
+        bool hasPlacedBet;
+    }
 
-    function placeBet() external {}
+    struct Choice{
+        string homeWin;
+        string homeLoose;
+        string awayWin;
+        string awayLoose;
+        string draw;
+    }
 
-    function result() external {}
+    mapping(address => Users) user;
+    mapping(address => Choice) usersChoice;
 
-    function claimWins() external public
+    function deposit() payable external{
+        Users storage user1= user[msg.sender];
+        require(msg.value > 0, "invalid amount");
+        user1.owner = msg.sender;
+        user1.accountBalance += msg.value;
+        emit Deposit(msg.sender, msg.value);
+    }
+    function Bet(string memory _choice)external {
+        Users storage user1 = user[msg.sender];
+        Choice storage user1choice = usersChoice[msg.sender];
+
+    }
+    function getResult() external{}
+    function claim() external{}
+    function reward() external{}
 }
